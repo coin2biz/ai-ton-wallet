@@ -1,1 +1,117 @@
-OCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TON</title><script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script><style>body{background:#000;color:#fff;font-family:Arial;text-align:center;padding:10px}.card{max-width:400px;margin:auto;background:#111;border:2px solid gold;border-radius:12px;padding:12px}.tab{flex:1;padding:8px;border:1px solid #333;background:#222;color:#fff}.tab.active{background:gold;color:#000}input,select{width:88%;padding:10px;margin:6px;border-radius:6px;background:#1a1a1a;color:#fff;border:1px solid #333}button{background:gold;color:#000;font-weight:bold;padding:11px;width:92%;border:none;border-radius:8px}</style></head><body><h3 style="color:gold">⚡ AI TON WALLET - FIXED</h3><div class="card"><div id="c"></div><div style="display:flex;gap:6px"><button class="tab active" id="a">SEND</button><button class="tab" id="b">SWAP</button></div><div id="p1"><input id="to" placeholder="UQ..."><input id="am" placeholder="0.05"><button id="s1">Send</button></div><div id="p2" style="display:none"><select id="f"><option>GRAM</option><option>USDT</option></select><select id="tt"><option>USDT</option><option>GRAM</option></select><input id="sa" placeholder="0.2"><button id="s2">Swap GRAM to USDT </button></div><p id="st"></p></div><script>const ui=new TON_CONNECT_UI.TonConnectUI({manifestUrl:'https://ai-ton-wallet.onrender.com/tonconnect-manifest.json',buttonRootId:'c'});a.onclick=()=>{p1.style.display='block';p2.style.display='none';a.classList.add('active');b.classList.remove('active')};b.onclick=()=>{p1.style.display='none';p2.style.display='block';b.classList.add('active');a.classList.remove('active')};s1.onclick=async()=>{try{await ui.sendTransaction({validUntil:Date.now()/1000+600|0,messages:[{address:to.value,amount:(+am.value*1e9)+''}]});st.innerText='Sent'}catch(e){st.innerText='Fail'}};s2.onclick=()=>{let v=sa.value||'0.2';let url=f.value=='TON'?'https://app.ston.fi/swap?from=TON&to=USDT&fa='+v:'https://app.ston.fi/swap?from=USDT&to=TON&fa='+v;window.open(url,'_blank');st.innerText='Fixed! TON->USDT no GRAM'};f.onchange=()=>{tt.value=f.value=='TON'?'USDT':'TON';s2.innerText='Swap '+f.value+' to '+tt.value+' - NO GRAM'}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI TON WALLET</title>
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+<script src="https://unpkg.com/tonweb@0.0.66/dist/tonweb.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif}
+body{background:#08080a;color:#fff;min-height:100vh;padding-bottom:90px}
+.header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#0a0a0c;border-bottom:1px solid #1c1c1e;position:sticky;top:0;z-index:10}
+.logo{display:flex;gap:8px;align-items:center;font-weight:900;font-size:15px;letter-spacing:0.5px}
+.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,#f5c842,#d9a523);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#000;font-weight:900;font-size:11px}
+.container{max-width:420px;margin:0 auto;padding:0 12px}
+.total-card{background:linear-gradient(135deg,#151519 0%,#0f0f12 100%);border:1px solid #2a2a2e;border-radius:22px;padding:20px;margin:12px 0;position:relative;overflow:hidden}
+.total-card:before{content:'';position:absolute;top:-50%;right:-30%;width:200px;height:200px;background:radial-gradient(circle,rgba(245,200,66,0.15),transparent);pointer-events:none}
+.total-label{color:#8a8a8e;font-size:12px;font-weight:600;letter-spacing:0.5px}
+.total-amount{font-size:40px;font-weight:900;margin:6px 0;letter-spacing:-1px}
+.total-change{color:#22c55e;font-size:13px;font-weight:600}
+.tokens{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.token-card{background:#141417;border:1px solid #2a2a2e;border-radius:16px;padding:14px}
+.token-head{display:flex;gap:8px;align-items:center;margin-bottom:10px;font-weight:700;font-size:13px}
+.token-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px}
+.token-amount{font-size:18px;font-weight:800;letter-spacing:-0.5px}
+.token-usd{font-size:11px;color:#8a8a8e;margin-top:4px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.btn{padding:14px;border-radius:14px;border:1px solid #2a2a2e;font-weight:800;font-size:14px;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:8px}
+.btn-gold{background:#f5c842;color:#000;border-color:#f5c842}
+.btn-dark{background:#1c1c1e;color:#fff}
+.receive-card{background:#141417;border:1px solid #2a2a2e;border-radius:20px;padding:18px;margin:14px 0}
+.receive-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.receive-title{color:#f5c842;font-weight:800;font-size:15px}
+.receive-sub{font-size:12px;color:#8a8a8e}
+.qr-wrap{background:#fff;padding:10px;border-radius:14px;width:132px;height:132px;margin:0 auto;display:flex;align-items:center;justify-content:center}
+.addr{font-family:monospace;font-size:11px;color:#a1a1aa;text-align:center;margin-top:10px;word-break:break-all}
+.activity{background:#141417;border:1px solid #2a2a2e;border-radius:20px;padding:18px;margin:14px 0}
+.activity-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.activity-title{color:#f5c842;font-weight:800;font-size:15px}
+.activity-link{font-size:12px;color:#8a8a8e}
+.tx{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #1e1e21}
+.tx:last-child{border:0}
+.tx-left{display:flex;gap:12px;align-items:center}
+.tx-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px}
+.tx-type{font-weight:700;font-size:13px}
+.tx-detail{font-size:11px;color:#8a8a8e;margin-top:2px}
+.tx-amount{font-weight:700;font-size:13px}
+.green{color:#22c55e}.red{color:#ef4444}.gold{color:#f5c842}
+.create-box{background:linear-gradient(135deg,#f5c842,#d9a523);border-radius:20px;padding:18px;margin:14px 0;color:#000}
+.create-title{font-weight:900;font-size:16px}
+.create-desc{font-size:12px;margin:6px 0 12px 0;opacity:0.85;line-height:1.4}
+.btn-black{background:#000;color:#f5c842;border-color:#000}
+.mnemonic-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.mn-word{background:#000;border:1px solid rgba(0,0,0,0.2);border-radius:10px;padding:10px;font-family:monospace;font-size:12px;color:#000}
+.mn-word span{opacity:0.6;margin-right:6px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#0a0a0c;border-top:1px solid #1e1e21;display:flex;justify-content:space-around;padding:10px 0 20px 0}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:#5a5a5e;font-weight:600;cursor:pointer}
+.nav-item.active{color:#f5c842}
+#ton-connect{transform:scale(0.82);transform-origin:right}
+</style>
+</head>
+<body>
+<div class="header"><div class="logo"><div class="logo-icon">AI</div>AI TON WALLET</div><div id="ton-connect"></div></div>
+<div class="container">
+<div class="total-card"><div class="total-label">Total Balance</div><div class="total-amount">$44.67 USD</div><div class="total-change">↗ $1.24 (+2.85%) today</div></div>
+
+<div class="tokens">
+<div class="token-card"><div class="token-head"><div class="token-icon" style="background:#0088cc;color:#fff">TON</div>TON</div><div class="token-amount">12.4587 TON</div><div class="token-usd">$38.42 USD</div></div>
+<div class="token-card"><div class="token-head"><div class="token-icon" style="background:#f5c842;color:#000">G</div>GRAM</div><div class="token-amount">1,250 GRAM</div><div class="token-usd">$6.25 USD</div></div>
+</div>
+
+<div class="actions"><button class="btn btn-gold" onclick="alert('Connect wallet to send')">✈ Send</button><button class="btn btn-dark" onclick="document.getElementById('receive').scrollIntoView({behavior:'smooth'})">◫ Receive</button></div>
+
+<div class="create-box" id="genBox"><div class="create-title">🔐 Create New Wallet</div><div class="create-desc">Generate real TON wallet v4R2 — like Tonkeeper. 24 words stay in your device only.</div><button class="btn btn-black" onclick="createWallet()">✨ Generate New Wallet</button><div id="status" style="text-align:center;margin-top:8px;font-size:12px;font-weight:700"></div></div>
+
+<div class="receive-card" id="mnCard" style="display:none;background:linear-gradient(135deg,#f5c842,#d9a523);border:0;color:#000"><div style="font-weight:900">📝 Your 24 Secret Words</div><div style="font-size:12px;margin:6px 0;opacity:0.8">Write on paper. Never share. If lost, funds gone.</div><div class="mnemonic-grid" id="mnGrid"></div><button class="btn btn-black" onclick="copyMn()">Copy Words</button><button class="btn" style="background:#fff;color:#000;margin-top:8px" onclick="confirmSaved()">I Saved Securely</button></div>
+
+<div class="receive-card" id="receive"><div class="receive-head"><div><div class="receive-title">Receive TON</div><div class="receive-sub">Share this QR to receive TON</div></div><div style="font-size:11px;color:#8a8a8e">Your wallet address</div></div><div class="qr-wrap"><div id="qrcode"></div></div><div class="addr" id="addrText">Connect wallet or Generate new to see address<br>EQB3...7fA9 • Tap to copy</div></div>
+
+<div class="activity"><div class="activity-head"><div class="activity-title">Recent Activity</div><div class="activity-link">See all ›</div></div>
+<div class="tx"><div class="tx-left"><div class="tx-icon" style="background:#22c55e;color:#000">↓</div><div><div class="tx-type">Received</div><div class="tx-detail">From: EQB...kL2m • 2 min ago</div></div></div><div class="tx-amount green">+2.500 TON</div></div>
+<div class="tx"><div class="tx-left"><div class="tx-icon" style="background:#ef4444;color:#fff">↑</div><div><div class="tx-type">Sent</div><div class="tx-detail">To: EQD...9zQp • 1 hour ago</div></div></div><div class="tx-amount red">-0.500 TON</div></div>
+<div class="tx"><div class="tx-left"><div class="tx-icon" style="background:#f5c842;color:#000">⇄</div><div><div class="tx-type">Swapped</div><div class="tx-detail">500 GRAM → 0.132 TON • yesterday</div></div></div><div class="tx-amount gold">+0.132 TON</div></div>
+</div>
+</div>
+
+<div class="bottom-nav"><div class="nav-item active"><div>◫</div>Wallet</div><div class="nav-item"><div>⇄</div>Swap</div><div class="nav-item"><div>◎</div>Staking</div><div class="nav-item"><div>◷</div>History</div><div class="nav-item"><div>⚙</div>Settings</div></div>
+
+<script>
+const tonweb=new TonWeb();let curM=null,curAddr=null;
+const tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:"https://ai-ton-wallet.onrender.com/tonconnect-manifest.json",buttonRootId:"ton-connect"});
+tonConnectUI.onStatusChange(w=>{if(w){const f=w.account.address;const raw=new TonWeb.utils.Address(f).toString(false);document.getElementById('addrText').innerText=f.slice(0,6)+'...'+f.slice(-4)+' • Tap to copy';document.getElementById('qrcode').innerHTML='';new QRCode(document.getElementById('qrcode'),{text:f,width:112,height:112});}});
+async function createWallet(){
+try{
+document.getElementById('status').innerText='Generating...';
+const m=await TonWeb.mnemonic.mnemonicNew(24);curM=m;
+const kp=await TonWeb.mnemonic.mnemonicToKeyPair(m);
+const WalletClass=tonweb.wallet.all.v4R2;const wallet=new WalletClass(tonweb.provider,{publicKey:kp.publicKey});
+const addr=await wallet.getAddress();curAddr=addr;
+const grid=document.getElementById('mnGrid');grid.innerHTML='';
+m.forEach((w,i)=>{const d=document.createElement('div');d.className='mn-word';d.innerHTML='<span>'+(i+1)+'.</span>'+w;grid.appendChild(d);});
+document.getElementById('mnCard').style.display='block';document.getElementById('status').innerText='Done! Save now';
+}catch(e){document.getElementById('status').innerText='Error: '+e.message;}
+}
+function confirmSaved(){
+if(!curAddr)return;
+const friendly=curAddr.toString(true,true,true);
+document.getElementById('addrText').innerText=friendly+' • Tap to copy';
+document.getElementById('qrcode').innerHTML='';new QRCode(document.getElementById('qrcode'),{text:friendly,width:112,height:112});
+document.getElementById('receive').scrollIntoView({behavior:'smooth'});
+}
+function copyMn(){if(curM){navigator.clipboard.writeText(curM.join(' '));alert('Copied! Save safely');}}
+document.getElementById('addrText').onclick=()=>{const t=document.getElementById('addrText').innerText;navigator.clipboard.writeText(t.split(' •')[0]);alert('Address copied');};
+</script>
+</body>
+</html>
