@@ -32,7 +32,7 @@ A real Web3 wallet dApp that sends **actual TON coins** on TON blockchain. Not d
 - Tonscan.org + Tonviewer.com APIs
 - Deployed on Render
 
-### 📸 Screenshots
+![Tonscan Proof](your-screenshot-name.jpg)
 Add your Tonscan screenshot here!
 
 ### 👨‍💻 Developer
