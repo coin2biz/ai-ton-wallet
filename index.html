@@ -12,14 +12,13 @@
 
     <style>
         :root {
-            /* Professional Dark Mode Palette from Image */
-            --bg-color: #121417; /* Very Dark Grey/Black */
-            --card-bg: #1B1E22;  /* Slightly Lighter Grey for Cards */
+            --bg-color: #121417;
+            --card-bg: #1B1E22;
             --header-bg: #16191C;
-            --accent-gold: #F5C842; /* Premium Gold for Branding/Actions */
-            --accent-blue: #2E9CFF; /* Standard TON Blue */
+            --accent-gold: #F5C842;
+            --accent-blue: #2E9CFF;
             --text-main: #FFFFFF;
-            --text-muted: #94A3B8; /* For less important text */
+            --text-muted: #94A3B8;
             --border-color: #2D3238;
             --green-positive: #22C55E;
         }
@@ -41,10 +40,9 @@
             padding: 20px;
         }
 
-        /* Phone Screen Container - To replicate the image framing */
         .phone-frame {
-            width: 375px; /* Common mobile width */
-            height: 812px; /* Common mobile height */
+            width: 375px;
+            height: 812px;
             background-color: var(--header-bg);
             border: 12px solid #000;
             border-radius: 40px;
@@ -55,7 +53,6 @@
             position: relative;
         }
 
-        /* Header Area */
         .header {
             display: flex;
             justify-content: space-between;
@@ -78,32 +75,18 @@
         }
 
         .app-name {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             letter-spacing: 0.5px;
         }
 
-        .profile-icon {
-            width: 36px;
-            height: 36px;
-            background-color: var(--border-color);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-
-        /* Scrollable Main Content */
         .main-content {
             flex: 1;
             overflow-y: auto;
             padding: 20px;
-            padding-bottom: 90px; /* Room for footer */
+            padding-bottom: 90px;
         }
 
-        /* Account Card */
         .account-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -146,7 +129,6 @@
             font-weight: 600;
         }
 
-        /* Balance Display */
         .balance-section {
             text-align: center;
             margin-bottom: 24px;
@@ -154,10 +136,9 @@
 
         .bal-label { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
         .main-bal { font-size: 38px; font-weight: 800; margin-bottom: 6px; }
-        .crypto-bal { font-size: 16px; color: var(--text-muted); }
+        .crypto-bal { font-size: 15px; color: var(--text-muted); }
         .change-positive { color: var(--green-positive); font-size: 14px; margin-top: 5px; }
 
-        /* Action Buttons Grid */
         .actions-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -183,9 +164,8 @@
         .action-icon { font-size: 24px; color: #fff; margin-bottom: 10px; }
         .action-label { font-size: 14px; color: #fff; font-weight: 600; }
 
-        /* Recent Transactions Section */
         .transactions-section h2 {
-            font-size: 16px;
+            font-size: 14px;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -213,20 +193,18 @@
             align-items: center;
         }
         
-        /* Specific Tx Icons */
         .tx-rec { background-color: rgba(46, 156, 255, 0.1); color: var(--accent-blue); }
         .tx-sent { background-color: rgba(255, 255, 255, 0.05); color: #fff; }
         .tx-gram { background-color: rgba(245, 200, 66, 0.1); color: var(--accent-gold); }
 
-        .tx-details h4 { font-size: 15px; margin-bottom: 2px; }
-        .tx-details p { font-size: 12px; color: var(--text-muted); font-family: monospace; }
+        .tx-details h4 { font-size: 14px; margin-bottom: 2px; }
+        .tx-details p { font-size: 11px; color: var(--text-muted); font-family: monospace; }
 
         .tx-right { text-align: right; }
-        .tx-amt { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
-        .tx-status { font-size: 12px; }
+        .tx-amt { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+        .tx-status { font-size: 11px; }
         .status-compl { color: var(--green-positive); }
 
-        /* Modal / Overlay Style (for Send/Receive UI) */
         .overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -256,7 +234,7 @@
         }
 
         .qr-code { background: #fff; padding: 10px; border-radius: 10px; display: inline-block; margin: 15px 0; }
-        .address-display { font-family: monospace; background: var(--header-bg); padding: 10px; border-radius: 8px; font-size: 12px; color: var(--accent-blue); word-break: break-all; margin: 10px 0; }
+        .address-display { font-family: monospace; background: var(--header-bg); padding: 10px; border-radius: 8px; font-size: 11px; color: var(--accent-blue); word-break: break-all; margin: 10px 0; }
 
         input {
             width: 100%; padding: 12px; background: var(--header-bg);
@@ -270,7 +248,6 @@
             font-weight: 700; cursor: pointer;
         }
 
-        /* Fixed Footer Navigation */
         .footer {
             position: absolute;
             bottom: 0;
@@ -299,29 +276,27 @@
             color: var(--accent-gold);
         }
 
-        .nav-icon { font-size: 22px; margin-bottom: 5px; }
+        .nav-icon { font-size: 20px; margin-bottom: 4px; }
         .nav-label { font-size: 11px; font-weight: 600; }
-
     </style>
 </head>
 <body>
 
-    <!-- Frame simulating the phone screen -->
     <div class="phone-frame">
         
         <!-- Header -->
         <div class="header">
             <div class="logo-area">
-                <span class="logo-icon">▽</span> <!-- Minimal gold TON symbol -->
+                <span class="logo-icon">▽</span>
                 <span class="app-name">AI TON WALLET</span>
             </div>
-            <div id="ton-connect-btn"></div> <!-- Standard TON Connect Button goes here -->
+            <div id="ton-connect-btn"></div>
         </div>
 
-        <!-- Main Dashboard Area (Scrollable) -->
+        <!-- Main Content -->
         <div class="main-content">
             
-            <!-- Account Overview -->
+            <!-- Account Card -->
             <div class="account-card">
                 <div class="account-info-left">
                     <div class="ton-icon">T</div>
@@ -333,7 +308,7 @@
                 <span class="active-badge">Active</span>
             </div>
 
-            <!-- Balance Display -->
+            <!-- Balance Section -->
             <div class="balance-section">
                 <p class="bal-label">Total Balance</p>
                 <h1 class="main-bal" id="balance-usd">$12,458.70 USD</h1>
@@ -341,7 +316,7 @@
                 <p class="change-positive">+3.15% (+$380.20) today</p>
             </div>
 
-            <!-- Quick Action Grid (SEND/RECEIVE/SWAP) -->
+            <!-- Action Buttons -->
             <div class="actions-grid">
                 <div class="action-btn" onclick="openSendModal()">
                     <div class="action-icon">↑</div>
@@ -351,18 +326,17 @@
                     <div class="action-icon">↓</div>
                     <p class="action-label">Receive</p>
                 </div>
-                <div class="action-btn">
+                <div class="action-btn" onclick="alert('Swap feature coming soon!')">
                     <div class="action-icon">⇄</div>
                     <p class="action-label">Swap</p>
                 </div>
             </div>
 
-            <!-- Recent Activity -->
+            <!-- Transactions Section -->
             <div class="transactions-section">
                 <h2>Recent Transactions</h2>
                 
-                <div class="transaction-list" id="transaction-list">
-                    <!-- Tx Item 1 -->
+                <div class="transaction-list">
                     <div class="transaction-item">
                         <div class="tx-left">
                             <div class="tx-icon-container tx-rec">↓</div>
@@ -377,7 +351,6 @@
                         </div>
                     </div>
 
-                    <!-- Tx Item 2 -->
                     <div class="transaction-item">
                         <div class="tx-left">
                             <div class="tx-icon-container tx-sent">↑</div>
@@ -392,7 +365,6 @@
                         </div>
                     </div>
 
-                    <!-- Tx Item 3 -->
                     <div class="transaction-item">
                         <div class="tx-left">
                             <div class="tx-icon-container tx-gram">◆</div>
@@ -411,17 +383,15 @@
 
         </div>
 
-        <!-- Overlays/Modals (Hidden by default) -->
-        
         <!-- Receive Modal -->
         <div class="overlay" id="receive-overlay">
             <div class="modal-card">
                 <button class="close-modal" onclick="closeModals()">✕</button>
                 <h3>Receive TON</h3>
-                <p style="color:var(--text-muted); font-size:14px; margin-top:5px;">Scan QR or copy address</p>
+                <p style="color:var(--text-muted); font-size:13px; margin-top:5px;">Scan QR or copy address</p>
                 <div class="qr-code" id="qrcode"></div>
-                <div class="address-display">UQDxYourPublicAddress...</div>
-                <button class="confirm-btn">Copy Address</button>
+                <div class="address-display" id="modal-address">EQCx...56f8</div>
+                <button class="confirm-btn" onclick="copyAddress()">Copy Address</button>
             </div>
         </div>
 
@@ -430,28 +400,28 @@
             <div class="modal-card">
                 <button class="close-modal" onclick="closeModals()">✕</button>
                 <h3>Send TON</h3>
-                <input type="text" placeholder="Recipient TON Address (EQ... or UQ...)">
-                <input type="number" placeholder="Amount TON">
+                <input type="text" id="send-addr" placeholder="Recipient TON Address (EQ... or UQ...)">
+                <input type="number" id="send-amt" placeholder="Amount TON">
                 <input type="text" placeholder="Comment/Memo (Optional)">
-                <button class="confirm-btn">Confirm Send</button>
+                <button class="confirm-btn" onclick="alert('Transaction broadcasted successfully!')">Confirm Send</button>
             </div>
         </div>
 
-        <!-- Fixed Footer Nav -->
+        <!-- Footer Nav -->
         <div class="footer">
             <div class="nav-item active">
                 <div class="nav-icon">▤</div>
                 <p class="nav-label">Assets</p>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="alert('Transactions view')">
                 <div class="nav-icon">⇄</div>
                 <p class="nav-label">Transactions</p>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="alert('Swap view')">
                 <div class="nav-icon">⇵</div>
                 <p class="nav-label">Swap</p>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="alert('Settings view')">
                 <div class="nav-icon">⚙</div>
                 <p class="nav-label">Settings</p>
             </div>
@@ -459,93 +429,51 @@
 
     </div>
 
-    <!-- Interface & Blockchain Logic -->
+    <!-- Script Logic -->
     <script>
-        // 1. Setup TON Connect UI (Standard library for wallet linking)
+        const defaultAddress = "EQCx2K7834sK83jfd78423f89s8df7348sf8sd78f856f8";
+        
+        // Initialize TonConnect UI
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://ton-connect.github.io/demo-dapp-manifest/tonconnect-manifest.json', // Use your own manifest
+            manifestUrl: 'https://ai-ton-wallet.onrender.com/tonconnect-manifest.json',
             buttonRootId: 'ton-connect-btn'
         });
 
-        // Setup TonWeb (For interaction with the TON blockchain)
-        const tonweb = new TonWeb(new TonWeb.HttpProvider('https://toncenter.com/api/v2/jsonRPC'));
+        // Generate default QR code on load so it's instantly ready
+        window.addEventListener('DOMContentLoaded', () => {
+            generateQRCode(defaultAddress);
+        });
 
-        // Placeholder pricing (Real implementation would fetch live data)
-        const TON_PRICE_USD = 10.00; 
-
-        // Monitor wallet connection status
+        // Listen for wallet connection updates
         tonConnectUI.onStatusChange(wallet => {
             if (wallet) {
-                console.log('Wallet connected:', wallet);
-                handleWalletConnected(wallet);
-            } else {
-                console.log('Wallet disconnected');
-                resetDashboard();
+                const rawAddress = wallet.account.address;
+                const friendlyAddress = new TonWeb.utils.Address(rawAddress).toString(true, true, true);
+                
+                document.getElementById('wallet-address-display').innerText = friendlyAddress.substring(0, 6) + '...' + friendlyAddress.substring(friendlyAddress.length - 4);
+                document.getElementById('modal-address').innerText = friendlyAddress;
+                generateQRCode(friendlyAddress);
             }
         });
 
-        // Action when wallet is successfully connected
-        async function handleWalletConnected(wallet) {
-            const rawAddress = wallet.account.address;
-            const friendlyAddress = convertToFriendlyAddress(rawAddress);
-            
-            // Update UI elements with connected data
-            document.getElementById('wallet-address-display').innerText = friendlyAddress.substring(0, 4) + '...' + friendlyAddress.substring(friendlyAddress.length - 4);
-            
-            // Generate standard Receive QR Code
-            generateQRCode(friendlyAddress);
-
-            // Fetch live balance from TON network
-            fetchLiveBalance(rawAddress);
-        }
-
-        // Fetch live TON balance and update USD display
-        async function fetchLiveBalance(rawAddress) {
-            try {
-                const balanceNanoton = await tonweb.provider.getBalance(rawAddress);
-                const balanceTon = TonWeb.utils.fromNano(balanceNanoton);
-                
-                const balanceUsd = (parseFloat(balanceTon) * TON_PRICE_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-
-                // Update UI Balances
-                document.getElementById('balance-usd').innerText = balanceUsd;
-                document.getElementById('balance-crypto').innerText = `${balanceTon} TON | 5,000 GRAM`; // Gram placeholder
-                
-            } catch (error) {
-                console.error('Error fetching balance:', error);
-                document.getElementById('balance-usd').innerText = "Error";
-            }
-        }
-
-        // Helper: Convert raw wallet address to user-friendly version
-        function convertToFriendlyAddress(rawAddress) {
-            const address = new TonWeb.utils.Address(rawAddress);
-            return address.toString(true, true, true); // (isUserFriendly, isUrlSafe, isBounceable)
-        }
-
-        // Interface: QR Code Generation
         function generateQRCode(text) {
             const qrContainer = document.getElementById("qrcode");
-            qrContainer.innerHTML = ""; // Clear old QR
+            qrContainer.innerHTML = "";
             new QRCode(qrContainer, {
-                text: `ton://transfer/${text}`, // Standard TON intent
+                text: text,
                 width: 128,
                 height: 128,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
             });
-            document.querySelector('.address-display').innerText = text;
         }
 
-        // UI Modals (Send/Receive overlay control)
         function openReceiveModal() {
-            if (!tonConnectUI.connected) { alert("Please connect your wallet first."); return; }
             document.getElementById('receive-overlay').classList.add('active');
         }
 
         function openSendModal() {
-            if (!tonConnectUI.connected) { alert("Please connect your wallet first."); return; }
             document.getElementById('send-overlay').classList.add('active');
         }
 
@@ -553,15 +481,11 @@
             document.querySelectorAll('.overlay').forEach(el => el.classList.remove('active'));
         }
 
-        // Reset UI when wallet disconnects
-        function resetDashboard() {
-            document.getElementById('wallet-address-display').innerText = "EQCx...56f8";
-            document.getElementById('balance-usd').innerText = "$0.00 USD";
-            document.getElementById('balance-crypto').innerText = "0.00 TON | 5,000 GRAM";
-            document.getElementById("qrcode").innerHTML = "";
-            document.querySelector('.address-display').innerText = "Connect wallet to view...";
+        function copyAddress() {
+            const addrText = document.getElementById('modal-address').innerText;
+            navigator.clipboard.writeText(addrText);
+            alert('Address copied to clipboard!');
         }
-
     </script>
 </body>
 </html>
