@@ -1,1 +1,567 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI TON WALLET V5</title><script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script><style>body{margin:0;background:#000;display:flex;justify-content:center;align-items:center;min-height:100vh;font-family:Arial} .phone{width:380px;background:#15151f;border:3px solid #d4af37;border-radius:30px;padding:25px;position:relative} .title{text-align:center;color:#f9d76b;font-size:22px;font-weight:700} .balance{text-align:center;color:#00d9ff;margin:15px 0} #qrcode{display:flex;justify-content:center;margin:20px 0;background:#fff;padding:15px;border-radius:15px} .label{color:#aaa;font-size:12px;margin:10px 0 5px} input{width:100%;padding:13px;border-radius:10px;border:1px solid #444;background:#1f1f2e;color:#fff;box-sizing:border-box} .send-btn{width:100%;margin-top:15px;padding:14px;background:#ffdd33;color:#000;border:0;border-radius:12px;font-weight:700;font-size:16px} .footer{text-align:center;color:#666;font-size:10px;margin-top:12px} #botBtn{position:absolute;bottom:15px;right:15px;width:58px;height:58px;background:#22283a;border:2px solid #d4af37;border-radius:50%;display:flex;justify-content:center;align-items:center;cursor:pointer;box-shadow:0 0 15px #ffdd33} #chatPopup{position:absolute;bottom:80px;right:15px;background:#fff;color:#000;padding:10px 12px;border-radius:12px;width:190px;display:none} #chatPopup.show{display:block}</style></head><body><div class="phone"><div class="title">🤖 AI TON WALLET</div><div class="balance">💎 1.25 TON balance</div><div id="ton-connect" style="display:flex;justify-content:center;margin:10px 0"></div><div id="qrcode"><canvas id="qrCanvas"></canvas></div><div style="text-align:center;color:#888;font-size:11px">Scan to receive TON</div><div class="label">Recipient UQ... / EQ...</div><input id="recipient" placeholder="UQ... wallet"><div class="label">Amount e.g. 0.05</div><input id="amount" value="0.05" type="number"><button class="send-btn" onclick="sendTON()">Send TON</button><div class="footer">🛡️ Secured • Chennai • Trusted Wallet</div><div id="botBtn" onclick="document.getElementById('chatPopup').classList.toggle('show')">🤖</div><div id="chatPopup">Hi da! balance / send nu kelu 🤖</div></div><script>const tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:'https://ton-connect.github.io/demo-dapp-with-react-ui/tonconnect-manifest.json',buttonRootId:'ton-connect'});QRCode.toCanvas(document.getElementById('qrCanvas'),'UQDemoChennaiReceive',{width:160});async function sendTON(){const to=document.getElementById('recipient').value;const amt=document.getElementById('amount').value;if(!to||!amt)return alert('Address & Amount podu da!');const tx={validUntil:Math.floor(Date.now()/1000)+300,messages:[{address:to,amount:(parseFloat(amt)*1e9).toString()}]};try{await tonConnectUI.sendTransaction(tx);alert('TON Sent da!')}catch(e){alert(e.message)}}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI TON Wallet Dashboard</title>
+    
+    <!-- TON & UI Libraries -->
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <script src="https://unpkg.com/tonweb@0.0.66/dist/tonweb.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+    <style>
+        :root {
+            /* Professional Dark Mode Palette from Image */
+            --bg-color: #121417; /* Very Dark Grey/Black */
+            --card-bg: #1B1E22;  /* Slightly Lighter Grey for Cards */
+            --header-bg: #16191C;
+            --accent-gold: #F5C842; /* Premium Gold for Branding/Actions */
+            --accent-blue: #2E9CFF; /* Standard TON Blue */
+            --text-main: #FFFFFF;
+            --text-muted: #94A3B8; /* For less important text */
+            --border-color: #2D3238;
+            --green-positive: #22C55E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Phone Screen Container - To replicate the image framing */
+        .phone-frame {
+            width: 375px; /* Common mobile width */
+            height: 812px; /* Common mobile height */
+            background-color: var(--header-bg);
+            border: 12px solid #000;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Header Area */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            color: var(--accent-gold);
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .app-name {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-icon {
+            width: 36px;
+            height: 36px;
+            background-color: var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        /* Scrollable Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 90px; /* Room for footer */
+        }
+
+        /* Account Card */
+        .account-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .account-info-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ton-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .account-det h3 { font-size: 16px; }
+        .account-det p { font-size: 13px; color: var(--text-muted); font-family: monospace; }
+
+        .active-badge {
+            background-color: rgba(34, 197, 94, 0.15);
+            color: var(--green-positive);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Balance Display */
+        .balance-section {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .bal-label { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
+        .main-bal { font-size: 38px; font-weight: 800; margin-bottom: 6px; }
+        .crypto-bal { font-size: 16px; color: var(--text-muted); }
+        .change-positive { color: var(--green-positive); font-size: 14px; margin-top: 5px; }
+
+        /* Action Buttons Grid */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .action-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: var(--border-color);
+            border-color: var(--accent-gold);
+        }
+
+        .action-icon { font-size: 24px; color: #fff; margin-bottom: 10px; }
+        .action-label { font-size: 14px; color: #fff; font-weight: 600; }
+
+        /* Recent Transactions Section */
+        .transactions-section h2 {
+            font-size: 16px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .transaction-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tx-left { display: flex; align-items: center; gap: 12px; }
+        
+        .tx-icon-container {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Specific Tx Icons */
+        .tx-rec { background-color: rgba(46, 156, 255, 0.1); color: var(--accent-blue); }
+        .tx-sent { background-color: rgba(255, 255, 255, 0.05); color: #fff; }
+        .tx-gram { background-color: rgba(245, 200, 66, 0.1); color: var(--accent-gold); }
+
+        .tx-details h4 { font-size: 15px; margin-bottom: 2px; }
+        .tx-details p { font-size: 12px; color: var(--text-muted); font-family: monospace; }
+
+        .tx-right { text-align: right; }
+        .tx-amt { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+        .tx-status { font-size: 12px; }
+        .status-compl { color: var(--green-positive); }
+
+        /* Modal / Overlay Style (for Send/Receive UI) */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000;
+            visibility: hidden; opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .overlay.active { visibility: visible; opacity: 1; }
+
+        .modal-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute; top: 10px; right: 10px;
+            background: none; border: none; color: var(--text-muted);
+            font-size: 20px; cursor: pointer;
+        }
+
+        .qr-code { background: #fff; padding: 10px; border-radius: 10px; display: inline-block; margin: 15px 0; }
+        .address-display { font-family: monospace; background: var(--header-bg); padding: 10px; border-radius: 8px; font-size: 12px; color: var(--accent-blue); word-break: break-all; margin: 10px 0; }
+
+        input {
+            width: 100%; padding: 12px; background: var(--header-bg);
+            border: 1px solid var(--border-color); border-radius: 8px;
+            color: #fff; margin-bottom: 12px;
+        }
+
+        .confirm-btn {
+            background: var(--accent-gold); color: #000;
+            width: 100%; padding: 12px; border: none; border-radius: 8px;
+            font-weight: 700; cursor: pointer;
+        }
+
+        /* Fixed Footer Navigation */
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background-color: var(--header-bg);
+            border-top: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 10px;
+            z-index: 10;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--accent-gold);
+        }
+
+        .nav-icon { font-size: 22px; margin-bottom: 5px; }
+        .nav-label { font-size: 11px; font-weight: 600; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Frame simulating the phone screen -->
+    <div class="phone-frame">
+        
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-area">
+                <span class="logo-icon">▽</span> <!-- Minimal gold TON symbol -->
+                <span class="app-name">AI TON WALLET</span>
+            </div>
+            <div id="ton-connect-btn"></div> <!-- Standard TON Connect Button goes here -->
+        </div>
+
+        <!-- Main Dashboard Area (Scrollable) -->
+        <div class="main-content">
+            
+            <!-- Account Overview -->
+            <div class="account-card">
+                <div class="account-info-left">
+                    <div class="ton-icon">T</div>
+                    <div class="account-det">
+                        <h3>Account 1</h3>
+                        <p id="wallet-address-display">EQCx...56f8</p>
+                    </div>
+                </div>
+                <span class="active-badge">Active</span>
+            </div>
+
+            <!-- Balance Display -->
+            <div class="balance-section">
+                <p class="bal-label">Total Balance</p>
+                <h1 class="main-bal" id="balance-usd">$12,458.70 USD</h1>
+                <p class="crypto-bal" id="balance-crypto">1,245.87 TON | 5,000 GRAM</p>
+                <p class="change-positive">+3.15% (+$380.20) today</p>
+            </div>
+
+            <!-- Quick Action Grid (SEND/RECEIVE/SWAP) -->
+            <div class="actions-grid">
+                <div class="action-btn" onclick="openSendModal()">
+                    <div class="action-icon">↑</div>
+                    <p class="action-label">Send</p>
+                </div>
+                <div class="action-btn" onclick="openReceiveModal()">
+                    <div class="action-icon">↓</div>
+                    <p class="action-label">Receive</p>
+                </div>
+                <div class="action-btn">
+                    <div class="action-icon">⇄</div>
+                    <p class="action-label">Swap</p>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="transactions-section">
+                <h2>Recent Transactions</h2>
+                
+                <div class="transaction-list" id="transaction-list">
+                    <!-- Tx Item 1 -->
+                    <div class="transaction-item">
+                        <div class="tx-left">
+                            <div class="tx-icon-container tx-rec">↓</div>
+                            <div class="tx-details">
+                                <h4>Received 150.00 TON</h4>
+                                <p>From EQCx...a1b2 | Today 11:45 AM</p>
+                            </div>
+                        </div>
+                        <div class="tx-right">
+                            <p class="tx-amt status-compl">+$1,500.00</p>
+                            <p class="tx-status status-compl">● Completed</p>
+                        </div>
+                    </div>
+
+                    <!-- Tx Item 2 -->
+                    <div class="transaction-item">
+                        <div class="tx-left">
+                            <div class="tx-icon-container tx-sent">↑</div>
+                            <div class="tx-details">
+                                <h4>Sent 25.50 TON</h4>
+                                <p>To UQDx...c3d4 | Yesterday 09:30 AM</p>
+                            </div>
+                        </div>
+                        <div class="tx-right">
+                            <p class="tx-amt">$255.00</p>
+                            <p class="tx-status status-compl">● Completed</p>
+                        </div>
+                    </div>
+
+                    <!-- Tx Item 3 -->
+                    <div class="transaction-item">
+                        <div class="tx-left">
+                            <div class="tx-icon-container tx-gram">◆</div>
+                            <div class="tx-details">
+                                <h4>Received 500 GRAM</h4>
+                                <p>From EQ...f5e6 | 13 Oct 2026 14:10</p>
+                            </div>
+                        </div>
+                        <div class="tx-right">
+                            <p class="tx-amt status-compl">◆ Completed</p>
+                            <p class="tx-status status-compl">● Completed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Overlays/Modals (Hidden by default) -->
+        
+        <!-- Receive Modal -->
+        <div class="overlay" id="receive-overlay">
+            <div class="modal-card">
+                <button class="close-modal" onclick="closeModals()">✕</button>
+                <h3>Receive TON</h3>
+                <p style="color:var(--text-muted); font-size:14px; margin-top:5px;">Scan QR or copy address</p>
+                <div class="qr-code" id="qrcode"></div>
+                <div class="address-display">UQDxYourPublicAddress...</div>
+                <button class="confirm-btn">Copy Address</button>
+            </div>
+        </div>
+
+        <!-- Send Modal -->
+        <div class="overlay" id="send-overlay">
+            <div class="modal-card">
+                <button class="close-modal" onclick="closeModals()">✕</button>
+                <h3>Send TON</h3>
+                <input type="text" placeholder="Recipient TON Address (EQ... or UQ...)">
+                <input type="number" placeholder="Amount TON">
+                <input type="text" placeholder="Comment/Memo (Optional)">
+                <button class="confirm-btn">Confirm Send</button>
+            </div>
+        </div>
+
+        <!-- Fixed Footer Nav -->
+        <div class="footer">
+            <div class="nav-item active">
+                <div class="nav-icon">▤</div>
+                <p class="nav-label">Assets</p>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">⇄</div>
+                <p class="nav-label">Transactions</p>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">⇵</div>
+                <p class="nav-label">Swap</p>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">⚙</div>
+                <p class="nav-label">Settings</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Interface & Blockchain Logic -->
+    <script>
+        // 1. Setup TON Connect UI (Standard library for wallet linking)
+        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://ton-connect.github.io/demo-dapp-manifest/tonconnect-manifest.json', // Use your own manifest
+            buttonRootId: 'ton-connect-btn'
+        });
+
+        // Setup TonWeb (For interaction with the TON blockchain)
+        const tonweb = new TonWeb(new TonWeb.HttpProvider('https://toncenter.com/api/v2/jsonRPC'));
+
+        // Placeholder pricing (Real implementation would fetch live data)
+        const TON_PRICE_USD = 10.00; 
+
+        // Monitor wallet connection status
+        tonConnectUI.onStatusChange(wallet => {
+            if (wallet) {
+                console.log('Wallet connected:', wallet);
+                handleWalletConnected(wallet);
+            } else {
+                console.log('Wallet disconnected');
+                resetDashboard();
+            }
+        });
+
+        // Action when wallet is successfully connected
+        async function handleWalletConnected(wallet) {
+            const rawAddress = wallet.account.address;
+            const friendlyAddress = convertToFriendlyAddress(rawAddress);
+            
+            // Update UI elements with connected data
+            document.getElementById('wallet-address-display').innerText = friendlyAddress.substring(0, 4) + '...' + friendlyAddress.substring(friendlyAddress.length - 4);
+            
+            // Generate standard Receive QR Code
+            generateQRCode(friendlyAddress);
+
+            // Fetch live balance from TON network
+            fetchLiveBalance(rawAddress);
+        }
+
+        // Fetch live TON balance and update USD display
+        async function fetchLiveBalance(rawAddress) {
+            try {
+                const balanceNanoton = await tonweb.provider.getBalance(rawAddress);
+                const balanceTon = TonWeb.utils.fromNano(balanceNanoton);
+                
+                const balanceUsd = (parseFloat(balanceTon) * TON_PRICE_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+                // Update UI Balances
+                document.getElementById('balance-usd').innerText = balanceUsd;
+                document.getElementById('balance-crypto').innerText = `${balanceTon} TON | 5,000 GRAM`; // Gram placeholder
+                
+            } catch (error) {
+                console.error('Error fetching balance:', error);
+                document.getElementById('balance-usd').innerText = "Error";
+            }
+        }
+
+        // Helper: Convert raw wallet address to user-friendly version
+        function convertToFriendlyAddress(rawAddress) {
+            const address = new TonWeb.utils.Address(rawAddress);
+            return address.toString(true, true, true); // (isUserFriendly, isUrlSafe, isBounceable)
+        }
+
+        // Interface: QR Code Generation
+        function generateQRCode(text) {
+            const qrContainer = document.getElementById("qrcode");
+            qrContainer.innerHTML = ""; // Clear old QR
+            new QRCode(qrContainer, {
+                text: `ton://transfer/${text}`, // Standard TON intent
+                width: 128,
+                height: 128,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            document.querySelector('.address-display').innerText = text;
+        }
+
+        // UI Modals (Send/Receive overlay control)
+        function openReceiveModal() {
+            if (!tonConnectUI.connected) { alert("Please connect your wallet first."); return; }
+            document.getElementById('receive-overlay').classList.add('active');
+        }
+
+        function openSendModal() {
+            if (!tonConnectUI.connected) { alert("Please connect your wallet first."); return; }
+            document.getElementById('send-overlay').classList.add('active');
+        }
+
+        function closeModals() {
+            document.querySelectorAll('.overlay').forEach(el => el.classList.remove('active'));
+        }
+
+        // Reset UI when wallet disconnects
+        function resetDashboard() {
+            document.getElementById('wallet-address-display').innerText = "EQCx...56f8";
+            document.getElementById('balance-usd').innerText = "$0.00 USD";
+            document.getElementById('balance-crypto').innerText = "0.00 TON | 5,000 GRAM";
+            document.getElementById("qrcode").innerHTML = "";
+            document.querySelector('.address-display').innerText = "Connect wallet to view...";
+        }
+
+    </script>
+</body>
+</html>
