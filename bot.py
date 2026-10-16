@@ -62,4 +62,5 @@ app.add_handler(CommandHandler("referral",referral))
 app.add_handler(CommandHandler("top",top))
 print("Bot Running")
 app.run_polling()
-             
+
+  
