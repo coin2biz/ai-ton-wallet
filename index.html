@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PURE AI TOKEN - Payment Wallet</title>
+<style>
+body{background:#0a0a0a;color:#fff;font-family:Arial;text-align:center;padding:20px}
+.box{background:#1a1a1a;padding:20px;border-radius:15px;max-width:400px;margin:20px auto;border:1px solid #333}
+.wallet{background:#000;padding:15px;border-radius:10px;word-break:break-all;border:1px dashed #00ff88;margin:15px 0}
+.btn{background:#00ff88;color:#000;padding:12px 20px;border:none;border-radius:8px;font-weight:bold;width:90%;margin:10px}
+h1{color:#00ff88}
+</style>
+</head>
+<body>
+<h1>🚀 PURE AI TOKEN</h1>
+<div class="box">
+<h2>💎 Payment Wallet</h2>
+<p>Send TON to below address:</p>
+<div class="wallet" id="wallet">UQAEDooFclpORMBH4KHniCJq1O46wEyJ1hGzudZjXpR4P6Bg</div>
+<button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('wallet').innerText);alert('Copied!')">📋 Copy Wallet Address</button>
+<p>💰 Rate: 1 TON = 1000 PURE AI</p>
+<p>⚡ Minimum: 0.5 TON</p>
+<hr style="border:1px solid #333;margin:20px 0">
+<p>📩 After payment, send TX hash to <b>@coin2biz</b></p>
+<a href="https://tonviewer.com/UQAEDooFclpORMBH4KHniCJq1O46wEyJ1hGzudZjXpR4P6Bg" target="_blank"><button class="btn">🔍 View on TonViewer</button></a>
+</div>
+<p style="color:#888">Powered by PURE AI TOKEN - coin2biz</p>
+</body>
+</html>
